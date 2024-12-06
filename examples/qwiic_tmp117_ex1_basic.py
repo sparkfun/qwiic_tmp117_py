@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 #-------------------------------------------------------------------------------
-# qwiic_template_ex1_title.py TODO: replace template and title
+# qwiic_tmp117_ex1_basic.py
 #
-# TODO: Add description for this example
+# This script configures the TMP117 temperature sensor and prints the
+# temperature in degrees celsius and fahrenheit with a 500ms delay for
+# easier readings. 
 #-------------------------------------------------------------------------------
-# Written by SparkFun Electronics, TODO: month and year
+# Written by SparkFun Electronics, December 2024
 #
 # This python library supports the SparkFun Electroncis Qwiic ecosystem
 #
@@ -33,26 +35,33 @@
 # SOFTWARE.
 #===============================================================================
 
-import qwiic_template # TODO Import correct package
+import qwiic_tmp117
 import sys
+import time
 
 def runExample():
-	# TODO Replace template and title
-	print("\nQwiic Template Example 1 - Title\n")
+	print("\nQwiic TMP117 Example 1 - Basic Readings\n")
 
 	# Create instance of device
-	myDevice = qwiic_template.QwiicTemplate() # TODO update as needed
+	myTMP117 = qwiic_tmp117.QwiicTMP117()
 
 	# Check if it's connected
-	if myDevice.is_connected() == False:
+	if myTMP117.is_connected() == False:
 		print("The device isn't connected to the system. Please check your connection", \
 			file=sys.stderr)
 		return
 
 	# Initialize the device
-	myDevice.begin()
+	myTMP117.begin()
 
-	# TODO Add basic example code
+	while True:
+		if myTMP117.data_ready():
+			tempC = myTMP117.read_temp_c()
+			tempF = myTMP117.read_temp_f()
+			print("Temperature in Celsius:", tempC)
+			print("Temperature in Fahrenheit:", tempF)
+		
+		time.sleep(0.5)
 
 if __name__ == '__main__':
 	try:
