@@ -66,6 +66,7 @@ def runExample():
 			else:
 				myTMP117.set_temperature_offset(tempOffset)
 				print("New Offset Temperature (in C):", myTMP117.get_temperature_offset())
+				time.sleep(1) # Wait for the offset to be set
 				print("Temperature with Offset (C):", myTMP117.read_temp_c())
 
 if __name__ == '__main__':

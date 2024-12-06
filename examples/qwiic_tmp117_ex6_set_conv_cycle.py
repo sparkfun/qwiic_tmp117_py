@@ -78,7 +78,7 @@ def runExample():
 	print("AVG = Conversion Average Mode")
 	print("CONV = Conversion Cycle Bit\n")
 	
-	cm = myTMP117.get_conversion_mode()
+	cm = myTMP117.get_conversion_average_mode()
 	print("Current Conversion Average Mode:", cm, "(" + conv_avg_mode_to_string(cm) + ")")
 	print("Current Conversion Cylcle Bit Value: ", myTMP117.get_conversion_cycle_bit())
 	
@@ -90,7 +90,7 @@ def runExample():
 		option = int(input())
 		
 		if option == 1:
-			print("Current Conversion Average Mode:", conv_avg_mode_to_string(myTMP117.get_conversion_mode()))
+			print("Current Conversion Average Mode:", conv_avg_mode_to_string(myTMP117.get_conversion_average_mode()))
 			print ("\nSelect One of the Following Averaging Modes:")
 			print("0: No Averaging")
 			print("1: 8 Averaged Conversions")
@@ -101,8 +101,8 @@ def runExample():
 			if avgMode not in [0, 1, 2, 3]:
 				print("Invalid option. Please enter a number between 0 and 3.")
 				continue
-			myTMP117.set_conversion_mode(avgMode)
-			print("New Conversion Average Mode:", conv_avg_mode_to_string(myTMP117.get_conversion_mode()))
+			myTMP117.set_conversion_average_mode(avgMode)
+			print("New Conversion Average Mode:", conv_avg_mode_to_string(myTMP117.get_conversion_average_mode()))
 
 		if option == 2:
 			print("Current Conversion Cycle Bit Value:", myTMP117.get_conversion_cycle_bit())
