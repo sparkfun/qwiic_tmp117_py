@@ -33,7 +33,7 @@
 # SOFTWARE.
 #===============================================================================
 
-"""
+"""!
 qwiic_template
 ============
 Python module for the [SparkFun Qwiic TMP117 High Precision Temperature Sensor](https://www.sparkfun.com/products/15805)
@@ -143,15 +143,13 @@ class QwiicTMP117(object):
 
 
     def __init__(self, address=None, i2c_driver=None):
-        """
+        """!
         Constructor
 
-        :param address: The I2C address to use for the device
+        @param int, optional address: The I2C address to use for the device
             If not provided, the default address is used
-        :type address: int, optional
-        :param i2c_driver: An existing i2c driver object
+        @param I2CDriver, optional i2c_driver: An existing i2c driver object
             If not provided, a driver object is created
-        :type i2c_driver: I2CDriver, optional
         """
 
         # Use address if provided, otherwise pick the default
@@ -170,11 +168,10 @@ class QwiicTMP117(object):
             self._i2c = i2c_driver
 
     def is_connected(self):
-        """
+        """!
         Determines if this device is connected
 
-        :return: `True` if connected, otherwise `False`
-        :rtype: bool
+        @return **bool** `True` if connected, otherwise `False`
         """
         # Check if connected by seeing if an ACK is received
 
@@ -189,32 +186,29 @@ class QwiicTMP117(object):
     connected = property(is_connected)
 
     def begin(self):
-        """
+        """!
         Initializes this device with default parameters
 
-        :return: Returns `True` if successful, otherwise `False`
-        :rtype: bool
+        @return **bool** Returns `True` if successful, otherwise `False`
         """
 
         # Confirm device is connected before doing anything
         return self.is_connected()
     
     def get_address(self):
-        """
+        """!
         Returns the I2C address of the device
 
-        :return: The I2C address of the device
-        :rtype: int
+        @return **int** The I2C address of the device
         """
         return self.address
     
     def read_temp_c(self):
-        """
+        """!
         This function reads the temperature reading from the sensor
 	    and returns the value in degrees celsius.
 
-        :return: The temperature in degrees celsius
-        :rtype: float
+        @return **float** The temperature in degrees celsius
         """
         rawTemp = self.read_register(self.kRegTempResult)
         
@@ -225,21 +219,19 @@ class QwiicTMP117(object):
         return rawTemp * self.kTmp117Resolution
     
     def read_temp_f(self):
-        """
+        """!
         This function calculates the fahrenheit reading from the
 	    celsius reading initially found.
 
-        :return: The temperature in degrees fahrenheit
-        :rtype: float
+        @return **float** The temperature in degrees fahrenheit
         """
         return self.read_temp_c() * 1.8 + 32
 
     def get_temperature_offset(self):
-        """
+        """!
         This function reads the temperature offset value from the device
 
-        :return: The temperature offset value
-        :rtype: float
+        @return **float** The temperature offset value
         """
         offset = self.read_register(self.kRegTempOffset)
         
@@ -249,11 +241,10 @@ class QwiicTMP117(object):
         return offset * self.kTmp117Resolution
 
     def set_temperature_offset(self, offset):
-        """
+        """!
         This function sets the temperature offset value on the device
 
-        :param offset: The offset value to set
-        :type offset: float
+        @param float offset: The offset value to set
         """
         # Convert to 16-bit value
         offset = int(offset / self.kTmp117Resolution)
@@ -262,11 +253,10 @@ class QwiicTMP117(object):
         self.write_register(self.kRegTempOffset, offset)
 
     def get_low_limit(self):
-        """
+        """!
         This function reads the low limit register that is set by the user.
 
-        :return: The low limit temperature in degrees celsius
-        :rtype: float
+        @return **float** The low limit temperature in degrees celsius
         """
         lowLimit = self.read_register(self.kRegTLowLimit)
         
@@ -277,23 +267,21 @@ class QwiicTMP117(object):
         return lowLimit * self.kTmp117Resolution
     
     def set_low_limit(self, lowLimit):
-        """
+        """!
         This function allows the user to set the low limit register to whatever
         specified value, as long as in the range for the temperature sensor. This
         function can be used as a threshold for Therm mode and or Alert mode.
 
-        :param lowLimit: The low limit temperature in degrees celsius
-        :type lowLimit: float
+        @param float lowLimit: The low limit temperature in degrees celsius
         """
         scaledLimit = int(lowLimit / self.kTmp117Resolution)
         self.write_register(self.kRegTLowLimit, scaledLimit)
 
     def get_high_limit(self):
-        """
+        """!
         This function reads the high limit register that is set by the user.
-        
-        :return: The high limit temperature in degrees celsius
-        :rtype: float
+
+        @return **float** The high limit temperature in degrees celsius
         """
         highLimit = self.read_register(self.kRegTHighLimit)
         
@@ -304,35 +292,32 @@ class QwiicTMP117(object):
         return highLimit * self.kTmp117Resolution
     
     def set_high_limit(self, highLimit):
-        """
+        """!
         This function allows the user to set the high limit register to whatever
 	    specified value, as long as in the range for the temperature sensor. This
 	    function can be used as a threshold for Therm mode and or Alert mode
 
-        :param highLimit: The high limit temperature in degrees celsius
-        :type highLimit: float
+        @param float highLimit: The high limit temperature in degrees celsius
         """
         scaledLimit = int(highLimit / self.kTmp117Resolution)
         self.write_register(self.kRegTHighLimit, scaledLimit)
 
     def get_configuration_register(self):
-        """
+        """!
         This function reads configuration register. Use this function if you need to read
         certain flags before they are cleared. This can be found on page 25 of the
         datasheet.
 
-        :return: The configuration register value
-        :rtype: int
+        @return **int** The configuration register value
         """
         return self.read_register(self.kRegConfiguration)
     
     def get_high_low_alert(self):
-        """
+        """!
         This function reads configuration register and saves the high and low alert flags. 
 	    Use this function if you need to read the alert flags before they are cleared.
 
-        :return: The high and low alert flags in a list [low, high]
-        :rtype: list of bool
+        @return **list of bool** The high and low alert flags in a list [low, high]
 
         Index into the list with the kLowAlertIdx and kHighAlertIdx constants
         """
@@ -342,43 +327,39 @@ class QwiicTMP117(object):
         return [lowAlert, highAlert]
     
     def get_high_alert(self):
-        """	
+        """!
         This function reads the 15th bit of the configuration register to
         tell if the conversion result is higher than the high limit. This
         is set as a High Alert flag.
 
-        :return: `True` if the high alert flag is set, otherwise `False`
-        :rtype: bool
+        @return **bool** `True` if the high alert flag is set, otherwise `False`
         """
         configReg = self.read_register(self.kRegConfiguration)
         return ( (configReg & self.kConfigHighAlertMask) == self.kConfigHighAlertMask )
 
     def get_low_alert(self):
-        """
+        """!
         This function reads the 14th bit of the configuration register to
         tell if the conversion result is lower than the low limit. This
         is set as a Low Alert flag.
 
-        :return: `True` if the low alert flag is set, otherwise `False`
-        :rtype: bool
+        @return **bool** `True` if the low alert flag is set, otherwise `False`
         """
         configReg = self.read_register(self.kRegConfiguration)
         return ( (configReg & self.kConfigLowAlertMask) == self.kConfigLowAlertMask )
     
     def set_alert_function_mode(self, setAlertMode):
-        """
+        """!
         This function sets the alert function mode to either "alert" or
         "therm" mode
 
-        :param setAlertMode: The alert mode to set
-        :type setAlertMode: bool
+        @param bool setAlertMode: The alert mode to set
 
         Allowable setAlertMode values are:
             kThermMode
             kAlertMode
 
-        :return: `True` if successful, otherwise `False`
-        :rtype: bool
+        @return **bool** `True` if successful, otherwise `False`
         """
         if setAlertMode not in [self.kThermMode, self.kAlertMode]:
             return False
@@ -395,12 +376,11 @@ class QwiicTMP117(object):
         return True
 
     def get_alert_function_mode(self):
-        """
+        """!
         This function gets the alert function mode to either "alert" or 
 	    "therm" mode.
 
-        :return: The alert mode
-        :rtype: int
+        @return **int** The alert mode
 
         Allowable return values are:
             kThermMode
@@ -410,7 +390,7 @@ class QwiicTMP117(object):
         return (configReg & self.kConfigTNaMask) >> self.kConfigTNaShift
     
     def soft_reset(self):
-        """
+        """!
         This function performs a software reset, loading all the default
 	    values into the configuration register
         """
@@ -421,7 +401,7 @@ class QwiicTMP117(object):
     # TODO: could combine all of the below functions into one function that takes a mode parameter, 
     # but since Arduino library has them separate, kept them separate for now
     def set_continuous_conversion_mode(self):
-        """
+        """!
         This function sets the conversion mode of the sensor to be 
         continuous. The TMP117 defaults to Continuous Conversion Mode on reset.
         """
@@ -432,7 +412,7 @@ class QwiicTMP117(object):
         self.write_register(self.kRegConfiguration, configReg)
     
     def set_shutdown_mode(self):
-        """
+        """!
         This function sets the conversion mode of the sensor to be 
 	    in shutdown mode. The TMP117 defaults to Continuous Conversion Mode 
 	    on reset.
@@ -444,7 +424,7 @@ class QwiicTMP117(object):
         self.write_register(self.kRegConfiguration, configReg)
 
     def set_one_shot_mode(self):
-        """
+        """!
         This function sets the conversion mode of the sensor to be
         in one shot mode. The TMP117 defaults to Continuous Conversion Mode
         on reset.
@@ -456,11 +436,10 @@ class QwiicTMP117(object):
         self.write_register(self.kRegConfiguration, configReg)
 
     def get_conversion_mode(self):
-        """
-        This function reads the mode for the conversions. 
+        """!
+        This function reads the mode for the conversions.
 
-        :return: The conversion mode
-        :rtype: int
+        @return **int** The conversion mode
 
         Allowable return values are:
             kContinuousConversionMode
@@ -471,12 +450,11 @@ class QwiicTMP117(object):
         return (configReg & self.kConfigModMask) >> self.kConfigModShift
     
     def set_conversion_average_mode(self, convMode):
-        """
+        """!
         This function sets the conversion averaging mode of the device
 	    when in Continuous Conversion Mode.
 
-        :param convMode: The conversion averaging mode to set
-        :type convMode: int
+        @param int convMode: The conversion averaging mode to set
 
         Allowable convMode values are:
             kConvAvgNone
@@ -484,8 +462,7 @@ class QwiicTMP117(object):
             kConvAvg32
             kConvAvg64
 
-        :return: `True` if successful, otherwise `False`
-        :rtype: bool
+        @return **bool** `True` if successful, otherwise `False`
         """
         if convMode not in [self.kConvAvgNone, self.kConvAvg8, self.kConvAvg32, self.kConvAvg64]:
             return False
@@ -499,11 +476,10 @@ class QwiicTMP117(object):
         return True
 
     def get_conversion_average_mode(self):
-        """
+        """!
         This function reads the conversion averaging mode
 
-        :return: The conversion averaging mode
-        :rtype: int
+        @return **int** The conversion averaging mode
 
         Allowable return values are:
             kConvAvgNone
@@ -515,7 +491,7 @@ class QwiicTMP117(object):
         return (configReg & self.kConfigAvgMask) >> self.kConfigAvgShift
 
     def set_conversion_cycle_bit(self, conv):
-        """
+        """!
         This function sets the conversion cycle time bit in 
         Continuous Conversion mode. The times for the conversions
         can be found below. The user puts in 0-7 and it will
@@ -531,15 +507,13 @@ class QwiicTMP117(object):
          4             1s      1s      1s       1s     
          5             4s      4s      4s       4s     
          6             8s      8s      8s       8s     
-         7             16s     16s     16s      16s    
+         7             16s     16s     16s      16s
 
-        :param conv: The conversion cycle time bit to set
-        :type conv: int
+        @param int conv: The conversion cycle time bit to set
 
         Allowable conv values are 0-7
 
-        :return: `True` if successful, otherwise `False`
-        :rtype: bool
+        @return **bool** `True` if successful, otherwise `False`
         """
         if conv < 0 or conv > 7:
             return False
@@ -551,14 +525,13 @@ class QwiicTMP117(object):
         self.write_register(self.kRegConfiguration, configReg)
     
     def get_conversion_cycle_bit(self):
-        """
+        """!
         This function returns the Conversion Cycle Bit value that the 
 	    device is currently in at the time. This bit can help determine
 	    the conversion cycle time that the device is in while being in
 	    continuous conversion mode. (See table in set_conversion_cycle_bit, or page 27 of datasheet)
 
-        :return: The conversion cycle bit value
-        :rtype: int
+        @return **int** The conversion cycle bit value
 
         Allowable return values are 0-7
         """
@@ -566,24 +539,22 @@ class QwiicTMP117(object):
         return (configReg & self.kConfigConvMask) >> self.kConfigConvShift
 
     def data_ready(self):
-        """
+        """!
         This function checks to see if there is data ready to be sent
 	    from the TMP117.
 
-        :return: `True` if the data is ready, otherwise `False`
-        :rtype: bool
+        @return **bool** `True` if the data is ready, otherwise `False`
         """
         configReg = self.read_register(self.kRegConfiguration)
         return ( (configReg & self.kConfigDataReadyMask) == self.kConfigDataReadyMask )
 
     def read_register(self, register):
-        """
+        """!
         Reads a register from the device
 
-        :param register: The register to read
-        :type register: int
-        :return: The 16-bit value read from the register
-        :rtype: int
+        @param int register: The register to read
+
+        @return **int** The 16-bit value read from the register
 
         Used because the device returns bytes as big-endian
         """
@@ -591,13 +562,11 @@ class QwiicTMP117(object):
         return (data[0] << 8) | data[1]
     
     def write_register(self, register, value):
-        """
+        """!
         Writes a value to a register on the device
 
-        :param register: The register to write to
-        :type register: int
-        :param value: The 16-bit value to write to the register
-        :type value: int
+        @param int register: The register to write to
+        @param int value: The 16-bit value to write to the register
 
         Used because the device expects bytes as big-endian
         """
