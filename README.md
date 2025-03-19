@@ -31,7 +31,7 @@ New to qwiic? Take a look at the entire [SparkFun qwiic ecosystem](https://www.s
 
 This Python package supports the following SparkFun qwiic products on Python, MicroPython and Circuit python. 
 
-* [SparkFun High-Precision Temperature Sensing Sensor - TMP117](https://www.sparkfun.com/products/15805)
+* [SparkFun High-Precision Temperature Sensor - TMP117](https://www.sparkfun.com/products/15805)
 
 ### Supported Platforms
 
